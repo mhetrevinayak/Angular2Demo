@@ -1,0 +1,56 @@
+﻿<br />
+<br />
+<employee-count *ngIf="employees" [all]="getTotalEmployeeCount()" [male]="getTotalMaleEmployeeCount()" [female]="getTotalFemaleEmployeeCount()"
+                (countRadioButtonSelectionChanged)="onEmployeeCountRadioButtonChange($event)"></employee-count>
+<br />
+<br />
+<table>
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Annual Salary</th>
+            <th>Date of Birth</th>
+            <th>Index</th>
+            <th>Is First</th>
+            <th>Is Last</th>
+            <th>Is Even</th>
+            <th>Is Odd</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor='let employee of employees; trackBy:trackByEmpCode;let i= index;let isFirst=first;let isLast=last;let isEven = even;let isOdd=odd'>
+            <tr *ngIf="selectedEmployeeCountRadioButton== 'All' || selectedEmployeeCountRadioButton == employee.gender ">
+                <td>
+                    <a [routerLink]="['/employees',employee.code]">
+                        {{employee.code | uppercase}}
+                    </a>
+                </td>
+                <td>{{employee.name |lowercase | employeeTitle:employee.gender}}</td>
+                <td>{{employee.gender}}</td>
+                <td>{{employee.annualSalary | currency:'INR':true:'1.2-2'}}</td>
+                <td>{{employee.dateOfBirth | date: 'dd/MM/y' |uppercase}}</td>
+                <td>{{i}}</td>
+                <td>{{isFirst}}</td>
+                <td>{{isLast}}</td>
+                <td>{{isEven}}</td>
+                <td>{{isOdd}}</td>
+            </tr>
+        </ng-container>
+        <tr *ngIf="!employees">
+            <td colspan="10">{{statusMessage}}</td>
+        </tr>
+        <tr *ngIf="employees && employees.length == 0">
+            <td colspan="10">Records not found.</td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<br />
+<button (click)="getEmployees()">Refresh Employees</button>
+
+<div>
+    Colour Preference :
+    <input type="text" [(ngModel)]="colour" [style.background]="colour" />
+</div>
